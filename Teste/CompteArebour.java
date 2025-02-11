@@ -1,3 +1,4 @@
+package Teste;
 public class compteArebour {
 
     public static void main(String[] args) throws InterruptedException {

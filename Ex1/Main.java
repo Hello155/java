@@ -7,7 +7,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Voiture voiture = new Voiture();
 
-        System.out.println("Entrez la couleur de la voiture parmis : " +voiture.couleurAutorise[1]);
+        System.out.println("Entrez la couleur de la voiture parmis les couleurs " +voiture.couleurAutorise[0] +"," +voiture.couleurAutorise[1] +"," +voiture.couleurAutorise[2] +" : ");
         voiture.couleur = scanner.nextLine();
         boolean found = false;
 
@@ -19,8 +19,9 @@ public class Main {
             }
         }
 
-        if(found) {
+        if(!found) {
             System.out.println("Erreur dans la saisie de la couleur !");
+            System.exit(1);
         }
         
         voiture.couleur = "Rouge";

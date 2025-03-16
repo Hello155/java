@@ -1,8 +1,6 @@
 package com.gestion_utilisateur;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.Date;
 
 public class Utilisateur {

@@ -11,7 +11,13 @@ import java.util.Scanner;
 import java.util.Vector;
 
 public class GestionUser {
-                
+    
+    /**
+     * insert un nouvel utilisateur
+     * @param connect
+     * @param nom
+     * @param email
+     */
     public static void add(Connexion connect, String nom, String email) {
         try {
             String sqlInsert = "INSERT INTO utilisateur (nom, email,date_creation) VALUES (?, ?, ?)";
@@ -29,6 +35,11 @@ public class GestionUser {
         }
     }
 
+    /**
+     * lit les utilisateurs en BD
+     * @param connect
+     * @return
+     */
     public static Vector<Utilisateur> lister(Connexion connect) {
         Vector<Utilisateur> utilisateurs = new Vector<Utilisateur>();
         try {
@@ -56,6 +67,12 @@ public class GestionUser {
         return utilisateurs;
     }
 
+    /**
+     * lit un utilisateur
+     * @param connect
+     * @param idUtilisateur
+     * @return
+     */
     public static Utilisateur get(Connexion connect, int idUtilisateur) {
         Utilisateur utilisateur = new Utilisateur();
         try {
@@ -82,6 +99,11 @@ public class GestionUser {
         return utilisateur;
     }
 
+    /**
+     * supprimer un utilisateur en BD
+     * @param connect
+     * @param idUtilisateur
+     */
     public static void supprimer(Connexion connect, int idUtilisateur) {
         try {
             String sqlInsert = "DELETE FROM utilisateur WHERE id = ?";
@@ -95,6 +117,13 @@ public class GestionUser {
         }
     }
 
+    /**
+     * modifier un utilisateur en BD
+     * @param connect
+     * @param id
+     * @param nom
+     * @param email
+     */
     public static void modifier(Connexion connect, int id, String nom, String email) {
         try {
             String sqlInsert = "UPDATE utilisateur SET nom = ?, email = ?, date_update = ? WHERE id = ?";
@@ -113,6 +142,12 @@ public class GestionUser {
         }
     }
     
+    /**
+     * recherche des utilisateurs par mail en BD
+     * @param connect
+     * @param emailCherche
+     * @return
+     */
     public static Vector<Utilisateur> rechercherParMail(Connexion connect, String emailCherche) {
         Vector<Utilisateur> utilisateurs = new Vector<Utilisateur>();
         try {
@@ -141,6 +176,12 @@ public class GestionUser {
         return utilisateurs;
     }
 
+    /**
+     * recherche des utilisateur par nom en BD
+     * @param connect
+     * @param nomCherche
+     * @return
+     */
     public static Vector<Utilisateur> rechercherParNom(Connexion connect, String nomCherche) {
         Vector<Utilisateur> utilisateurs = new Vector<Utilisateur>();
         try {
@@ -169,6 +210,11 @@ public class GestionUser {
         return utilisateurs;
     }
 
+    /**
+     * recherche des utilisateurs modifiés en BD
+     * @param connect
+     * @return
+     */
     public static Vector<Utilisateur> rechercherModifie(Connexion connect) {
         Vector<Utilisateur> utilisateurs = new Vector<Utilisateur>();
         try {

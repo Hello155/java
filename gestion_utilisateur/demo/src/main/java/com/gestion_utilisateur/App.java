@@ -18,24 +18,40 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.event.EventHandler;
 
+/**
+ * class controller de la gestion des utilisateurs
+ */
 public class App extends Application {
 
+/**
+ * main
+ * @param args
+ */
     public static void main(String[] args) {
         launch(args);
     }
 
+    /**
+     * méthode javafx de lancement de la fenêtre
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
 
         Scene scene = null;
 
-        scene = setMenu(scene);
+        scene = setMenu(scene); // init scene par le menu
 
         primaryStage.setTitle("Gestion des utilisateurs");
         primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.show(); // affichage fenêtre
     }
 
+    /**
+     * affichage du menu
+     * @param scene
+     * @return
+     * @throws Exception
+     */
     private Scene setMenu (Scene scene) throws Exception {
         System.out.println("affichage menu");
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -44,7 +60,7 @@ public class App extends Application {
 
         VBox root = fxmlLoader.<VBox>load();
 
-        // Créer la scène et afficher la fenêtre
+        // Créer ou récupère la scène
         if (scene == null) {
             scene = new Scene(root, 800, 600);
         } else {
@@ -57,11 +73,20 @@ public class App extends Application {
         return scene;
     }
 
+    /**
+     * action quitter l'application
+     * @param event
+     */
     @FXML protected void quitterAction (ActionEvent event) {
         System.out.println("quitter");
         Platform.exit();
     }
 
+    /**
+     * action affichage du formulaire de création d'un utilisateur
+     * @param event
+     * @throws Exception
+     */
     @FXML protected void creerFormAction (ActionEvent event) throws Exception {
         System.out.println("affichage formulaire creer");
         Node source = (Node) event.getSource();
@@ -69,6 +94,11 @@ public class App extends Application {
         setFormCreer(scene);
     }
 
+    /**
+     * action affichage du formulaire de recherche par mail
+     * @param event
+     * @throws Exception
+     */
     @FXML protected void rechercherParMailFormAction (ActionEvent event) throws Exception {
         System.out.println("affichage formulaire rechercher par mail");
         Node source = (Node) event.getSource();
@@ -76,6 +106,11 @@ public class App extends Application {
         setFormRechercherParMail(scene);
     }
 
+    /**
+     * action affichage du formulaire par nom
+     * @param event
+     * @throws Exception
+     */
     @FXML protected void rechercherParNomFormAction (ActionEvent event) throws Exception {
         System.out.println("affichage formulaire rechercher par nom");
         Node source = (Node) event.getSource();
@@ -83,66 +118,98 @@ public class App extends Application {
         setFormRechercherParNom(scene);
     }
 
+    /**
+     * action création d'un utilisateur
+     * @param event
+     * @throws Exception
+     */
     @FXML protected void creerAction (ActionEvent event) throws Exception {
         System.out.println("creer");
         Node source = (Node) event.getSource();
         Scene scene = source.getScene();
+        // récupération des valeurs saisies
         String nom = ((TextField)scene.lookup("#nom")).getText();
         String email = ((TextField)scene.lookup("#email")).getText();
         Connexion connexion = new Connexion();
-        GestionUser.add(connexion, nom, email);
+        GestionUser.add(connexion, nom, email); // enregistrement en BD
         connexion.close();
         setMenu(scene);
     }
 
+    /**
+     * action recherche par mail
+     * @param event
+     * @throws Exception
+     */
     @FXML protected void rechercherParMailAction (ActionEvent event) throws Exception {
         System.out.println("rechercher par mail");
         Node source = (Node) event.getSource();
         Scene scene = source.getScene();
         String email = ((TextField)scene.lookup("#email")).getText();
         Connexion connexion = new Connexion();
-        Vector<Utilisateur> utilisateurs = GestionUser.rechercherParMail(connexion, email);
+        Vector<Utilisateur> utilisateurs = GestionUser.rechercherParMail(connexion, email); // recherche par mail
         connexion.close();
 
-        setListe(scene, utilisateurs);
+        setListe(scene, utilisateurs); // affichage de la liste des utilisateurs
     }
 
+    /**
+     * action recherche par nom
+     * @param event
+     * @throws Exception
+     */
     @FXML protected void rechercherParNomAction (ActionEvent event) throws Exception {
         System.out.println("rechercher par nom");
         Node source = (Node) event.getSource();
         Scene scene = source.getScene();
         String nom = ((TextField)scene.lookup("#nom")).getText();
         Connexion connexion = new Connexion();
-        Vector<Utilisateur> utilisateurs = GestionUser.rechercherParNom(connexion, nom);
+        Vector<Utilisateur> utilisateurs = GestionUser.rechercherParNom(connexion, nom); // recherche par nom
         connexion.close();
 
-        setListe(scene, utilisateurs);
+        setListe(scene, utilisateurs); // affichage de la liste des utilisateurs
     }
 
+    /**
+     * action recherche des utilisateurs modifiés
+     * @param event
+     * @throws Exception
+     */
     @FXML protected void rechercherModifieAction (ActionEvent event) throws Exception {
         System.out.println("rechercher modifie");
         Node source = (Node) event.getSource();
         Scene scene = source.getScene();
         Connexion connexion = new Connexion();
-        Vector<Utilisateur> utilisateurs = GestionUser.rechercherModifie(connexion);
+        Vector<Utilisateur> utilisateurs = GestionUser.rechercherModifie(connexion); // recherche des utilisateurs modifies
         connexion.close();
 
-        setListe(scene, utilisateurs);
+        setListe(scene, utilisateurs); // affichage de la liste des utilisateurs
     }
 
+    /**
+     * action mise à jour d'un utilisateur
+     * @param event
+     * @throws Exception
+     */
     @FXML protected void updateAction (ActionEvent event) throws Exception {
         System.out.println("modifier");
         Node source = (Node) event.getSource();
         Scene scene = source.getScene();
+        // récupération des valeurs saisies
         int id = Integer.parseInt(((TextField)scene.lookup("#id")).getText());
         String nom = ((TextField)scene.lookup("#nom")).getText();
         String email = ((TextField)scene.lookup("#email")).getText();
         Connexion connexion = new Connexion();
-        GestionUser.modifier(connexion, id, nom, email);
+        GestionUser.modifier(connexion, id, nom, email); // modif d'un utilisateur en BD
         connexion.close();
         setMenu(scene);
     }
 
+    /**
+     * action navigation vers menu
+     * @param event
+     * @throws Exception
+     */
     @FXML protected void menuAction (ActionEvent event) throws Exception {
         System.out.println("menu");
         Node source = (Node) event.getSource();
@@ -150,18 +217,29 @@ public class App extends Application {
         setMenu(scene);
     }
 
+    /**
+     * action liste des utilisateurs
+     * @param event
+     * @throws Exception
+     */
     @FXML protected void listerAction (ActionEvent event) throws Exception {
         System.out.println("lister");
         Node source = (Node) event.getSource();
         Scene scene = source.getScene();
 
         Connexion connexion = new Connexion();
-        Vector<Utilisateur> utilisateurs = GestionUser.lister(connexion);
+        Vector<Utilisateur> utilisateurs = GestionUser.lister(connexion); // lecture de tous les utilsateurs en BD
         connexion.close();
 
-        setListe(scene, utilisateurs);
+        setListe(scene, utilisateurs); // affichage des utilisateurs
     }
 
+    /**
+     * méthode complète la vue lister.fxml (liste des utilisateurs) et affichage des utilisateurs (liste et recherches)
+     * @param scene
+     * @param utilisateurs
+     * @throws Exception
+     */
     private void setListe (Scene scene, Vector<Utilisateur> utilisateurs) throws Exception {
         System.out.println("affichage lister");
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -211,6 +289,7 @@ public class App extends Application {
             root.add(dateUpdate, 4, i+1);
             Button update = new Button();
             update.setId("update_" + utilisateurs.get(i).getId());
+            // bouton et action de mise à jour de chaque utilisateur
             update.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -228,6 +307,7 @@ public class App extends Application {
             root.add(update, 5, i+1);
             Button supprimer = new Button();
             supprimer.setId("supprimer_" + utilisateurs.get(i).getId());
+            // bouton et action de suppression de chaque utilisateur
             supprimer.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
@@ -254,13 +334,24 @@ public class App extends Application {
 
     }
 
+    /**
+     * méthode supprssion d un utilisateur
+     * @param scene
+     * @param idUtilisateur
+     * @throws Exception
+     */
     private void supprimerAction (Scene scene, int idUtilisateur) throws Exception {
         System.out.println("supprimer");
         Connexion connexion = new Connexion();
-        GestionUser.supprimer(connexion, idUtilisateur);
+        GestionUser.supprimer(connexion, idUtilisateur); // suppression de l'utilisateur en BD
         setMenu(scene);
     }
 
+    /**
+     * méthode formulaire de création de l utilisateur
+     * @param scene
+     * @throws Exception
+     */
     private void setFormCreer (Scene scene) throws Exception {
         System.out.println("formulaire creer");
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -278,6 +369,11 @@ public class App extends Application {
         
     }
 
+    /**
+     * méthode formulaire de recherche par mail
+     * @param scene
+     * @throws Exception
+     */
     private void setFormRechercherParMail (Scene scene) throws Exception {
         System.out.println("formulaire rechercher par mail");
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -295,6 +391,11 @@ public class App extends Application {
         
     }
 
+    /**
+     * méthode formulaire de recherche par nom
+     * @param scene
+     * @throws Exception
+     */
     private void setFormRechercherParNom (Scene scene) throws Exception {
         System.out.println("formulaire rechercher par nom");
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -312,10 +413,16 @@ public class App extends Application {
         
     }
 
+    /**
+     * méthode formulaire de mise à jour d un utilisateur
+     * @param scene
+     * @param idUtilisateur
+     * @throws Exception
+     */
     private void setFormUpdate (Scene scene, int idUtilisateur) throws Exception {
         System.out.println("formulaire modifier");
         Connexion connexion = new Connexion();
-        Utilisateur utilisateur = GestionUser.get(connexion, idUtilisateur);
+        Utilisateur utilisateur = GestionUser.get(connexion, idUtilisateur); // lecture de l'utilisateur en BD pour remplir les champs de modifications
         connexion.close();
 
         FXMLLoader fxmlLoader = new FXMLLoader();
@@ -337,5 +444,4 @@ public class App extends Application {
         .toExternalForm());
         
     }
-
 }
